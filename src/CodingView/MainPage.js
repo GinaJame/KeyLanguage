@@ -3,73 +3,73 @@ import './MainPage.css';
 import audio from './audio.wav';
 import ReactPlayer from 'react-player';
 import bg from './background.jpeg';
-//import azure from './azure'
-//import Sound from 'react-sound'
+import eye from './eye.png'
  
 
-function synthesizeSpeech(codingText)  {
-  // pull in the required packages.
-  const sdk = require("microsoft-cognitiveservices-speech-sdk");
-  //const readline = require("readline");
-  
-  // replace with your own subscription 
-  const subscriptionKey = "b094fed5294f4d1a8314fe671716c51c";
-  const serviceRegion = "southcentralus"; // e.g., "westus"
-  const filename = "audio.wav";
 
-  // we are done with the setup
-
-  // now create the audio-config pointing to our stream and
-  // the speech config specifying the language.
-  const speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
-  const synthesizer = new sdk.SpeechSynthesizer(speechConfig, undefined);
- 
-  synthesizer.speakSsmlAsync(
-    codingText,
-      result => {
-          if (result.errorDetails) {
-              console.log("No funciono");
-          } else {
-              console.log("Funcionando ando")
-          }
-
-          synthesizer.close();
-      },
-      error => {
-          console.log(error);
-          synthesizer.close();
-      });
-  
-}
 export default function MainPage() {
-    const [play, setPlaying]=useState(true);
-    const [code, setCode] = useState([]);
+  //The code is what we must listen
+    const [code, setCode] = useState({coding:''});
+    //The result of the code
+    const [text, setText] = useState([]);
+
+      //On change we should convert to audio and play it
     const handleOnChange = (event) => {
-      //music.play();
-      console.log(event.target.name);
-      console.log(event.target.value);
       setCode({
         [event.target.name]: event.target.value
       });
-      synthesizeSpeech(code)
-      setPlaying(!play)
-      setTimeout(() => { console.log("Stop playing"); }, 5000);
-      setPlaying(!play)
+      console.log(code)
+      if ('speechSynthesis' in window) {
+        var msg = new SpeechSynthesisUtterance();
+        console.log(code.coding.charAt(code.coding.length))
+          msg.text = code.coding.charAt(code.coding.length-1) ;
+          window.speechSynthesis.speak(msg);
+       }else{
+         // Speech Synthesis Not Supported 😣
+         alert("Sorry, your browser doesn't support text to speech!");
+      }
 
     };
+    const handleOnClick = ()=>{
+      //var x = code;
+      //const outputString = new Function(x)();
+      //setText(String(outputString))
+      setText("Happy to see you too")
+    }
 
     return (
+      //UI 
         <div className="MainPage" style={{ backgroundImage: `url(${bg})` }}>
-          <h3 className="title">Key Language</h3>
-          <textarea name="coding" onChange={handleOnChange} className="textarea"/>
-            <button className="">
-                Try Code!
-            </button>
-            <ReactPlayer
-              className="Audio"
-              url={audio}
-              playing={play}
-            />
+          <div className="Header">
+            <img src={eye}/>
+            <h1>
+              IRIS SOFTWARE
+            </h1>
+          </div>
+          <div className="WrapProgramming">
+            <div className="WrapBox">
+              <h3 className="title">Start Coding!</h3>
+              <textarea name="coding" onChange={handleOnChange} className="textarea"/>
+                <button className="niceButton" onClick={handleOnClick}>
+                    Run your Code!
+                </button>
+                {/*<ReactPlayer
+                  className="Audio"
+                  url={audio}
+                  playing={false}
+                />*/}
+            </div>
+            <div className="WrapConsole">
+              <h3 className="title">Your Output!</h3>
+              <textarea name="coding" className="textarea" value={text} disabled/>
+
+            </div>
+          </div>
+          
+          <div className="Footer">
+            <a target="_blank" href="https://icons8.com/icons/set/visible" rel='noreferrer'>Eye icon</a> icon by <a target="_blank" href="https://icons8.com" rel='noreferrer'>Icons8</a>
+          </div>
         </div>
     );
   }
+  
