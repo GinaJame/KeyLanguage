@@ -1,4 +1,4 @@
-### About This Project
+# About This Project
 Iris software is a software that  makes coding simple thanks to the shortcuts already configured in the keyboard. These shortcuts allow the user to write some of the most common commands using only one key instead of typing the hole command. Iris also counts with voice feedback that allows the user to hear what he is typing in case he types the wrong key.
 This project was create for the Microsoft challenge in the TecTogether Seattle Hack.
 
@@ -6,6 +6,9 @@ This project was create for the Microsoft challenge in the TecTogether Seattle H
 -You should download this files, then go to your terminal and type the command install npm
 -Then you should type the command npm start and open in your browser the next direction: [http://localhost:3000](http://localhost:3000) and 
 you will be able to see the project!!
+
+### The keyboard can be download with
+layout01.rar
 
 
 # Getting Started with Create React App
